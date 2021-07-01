@@ -2,6 +2,6 @@ const router = require('express').Router();
 
 const { sendError } = require('../controllers/error');
 
-router.all('*', sendError);
+router.get('*', sendError);
 
 module.exports = router;

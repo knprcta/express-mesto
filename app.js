@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const auth = require('./middlewares/auth');
+const { login, createUser } = require('./controllers/users');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const errorRouter = require('./routes/error');
@@ -20,8 +22,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/users', usersRouter);
-app.use('/cards', cardsRouter);
+app.post('/signin', login);
+app.post('/signup', createUser);
+app.use('/users', auth, usersRouter);
+app.use('/cards', auth, cardsRouter);
 app.use(errorRouter);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
